@@ -16,6 +16,38 @@ public class FloorManager : MonoBehaviour
 	List<Vector2Int> _switchOrder = new List<Vector2Int>();
 	GameObject _clearTargetFloor; // スライドさせる対象
 	Vector2Int _clearFloorPos = new Vector2Int(-1, -1); // Slideする床の座標
+	public Vector2Int PlayerPos { get; private set; }
+
+	private Transform _playerTransform; // 親子にはせず、ただ場所を覚えるだけ
+
+	void Update()
+	{
+		// もしプレイヤーがまだ見つかっていないなら、タグで探す
+		if (_playerTransform == null)
+		{
+			GameObject playerObj = GameObject.FindWithTag("Player");
+			if (playerObj != null) _playerTransform = playerObj.transform;
+		}
+
+		// プレイヤーがいたら、その「世界座標」を「マス座標」に変換し続ける
+		if (_playerTransform != null)
+		{
+			PlayerPos = WorldToCoord(_playerTransform.position);
+		}
+	}
+
+	public Vector2Int WorldToCoord(Vector3 worldPos)
+	{
+		// 【重要】自分の(Managerの)位置からの相対距離で計算する
+		// これで、Managerがどこに配置されていても正しく計算できます
+		Vector3 localPos = transform.InverseTransformPoint(worldPos);
+
+		float offset = 4f; // ここはステージサイズに合わせて調整
+		int x = Mathf.RoundToInt((localPos.x + offset) / 2f);
+		int z = Mathf.RoundToInt((localPos.z + offset) / 2f);
+
+		return new Vector2Int(x, z);
+	}
 
 	public bool IsHole(Vector2Int checkCoord)
 	{
