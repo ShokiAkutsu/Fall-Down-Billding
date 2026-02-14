@@ -14,7 +14,7 @@ public class SlidingMove : VisualSlide
 		Vector2Int target = _currentCoord;
 		Vector2Int checkPos = _currentCoord + _moveDir;
 
-		if (IsInsideFloor(checkPos))
+		if (IsInsideFloor(checkPos) && IsSafe(checkPos))
 		{
 			while (IsInsideFloor(checkPos)) // ç°ÇÕÅAï«Ç…ìÀÇ´ìñÇΩÇÈÇ‹Ç≈
 			{

@@ -145,4 +145,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 8
   _stepInterval: 2
-  indicatorPrefab: {fileID: 5661340078587378530, guid: a3059e97adb492e4e983a142c8b58037, type: 3}
+  _indicatorPrefab: {fileID: 5661340078587378530, guid: a3059e97adb492e4e983a142c8b58037, type: 3}

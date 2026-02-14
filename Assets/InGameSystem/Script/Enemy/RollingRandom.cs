@@ -13,7 +13,7 @@ public class RollingRandom : VisualRoll
 		foreach (var dir in directions)
 		{
 			Vector2Int target = _currentCoord + dir;
-			if (target.x >= 0 && target.x < _floorSize && target.y >= 0 && target.y < _floorSize)
+			if (IsSafe(target))
 			{
 				if (target != _lastCoord || _lastCoord == _currentCoord)
 					candidates.Add(target);
@@ -21,6 +21,12 @@ public class RollingRandom : VisualRoll
 		}
 
 		Vector2Int next = candidates.Count > 0 ? candidates[Random.Range(0, candidates.Count)] : _lastCoord;
+
+		if (candidates.Count > 0)
+			next = candidates[Random.Range(0, candidates.Count)]; // 先が合ったら進む
+		else
+			next = IsSafe(_lastCoord) ? _lastCoord : _currentCoord; // 先がなかったら戻る
+
 		_lastCoord = _currentCoord; // 次のターンのために今の場所を記憶
 		return next;
 	}

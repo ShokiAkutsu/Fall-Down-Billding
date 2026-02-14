@@ -85,7 +85,7 @@ public class FloorGenerator : MonoBehaviour
 					EnemyBase enemyScript = enemy.GetComponent<EnemyBase>();
 					if (enemyScript != null)
 					{
-						enemyScript.Setup(currentCoord, size); // 現在の座標(currentCoord)とステージサイズ(size)を渡す
+						enemyScript.Setup(currentCoord, size, manager); // 現在の座標(currentCoord)とステージサイズ(size)を渡す
 					}
 				}
 

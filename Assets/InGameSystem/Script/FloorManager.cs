@@ -13,16 +13,23 @@ public class FloorManager : MonoBehaviour
     GameObject _holeFloor;
 	Dictionary<Vector2Int, BlockSprite> _allBlocks = new Dictionary<Vector2Int, BlockSprite>(); // ブロックの場所を覚えておく
 	bool _isActive = false;
-	[SerializeField] private Vector2Int _targetCoord = new Vector2Int(0, 0);
 	List<Vector2Int> _switchOrder = new List<Vector2Int>();
 	GameObject _clearTargetFloor; // スライドさせる対象
+	Vector2Int _clearFloorPos = new Vector2Int(-1, -1); // Slideする床の座標
+
+	public bool IsHole(Vector2Int checkCoord)
+	{
+		if (!_clearTargetFloor) return false;
+		
+		return checkCoord == _clearFloorPos; // チェックしたい座標が、穴の座標と一致するか？
+	}
 
 	public void SetupClearFloor(Vector2Int coord)
 	{
-		
 		if (_allBlocks.ContainsKey(coord)) // 住所録から、指定された座標のブロックを探す
 		{
 			_clearTargetFloor = _allBlocks[coord].gameObject;// 見つかったら、そのGameObjectをクリア対象として保存
+			_clearFloorPos = coord;
 
 			Debug.Log($"座標 {coord} の床をクリア対象に設定しました。");
 		}
