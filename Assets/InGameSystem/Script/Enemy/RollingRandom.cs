@@ -13,7 +13,7 @@ public class RollingRandom : VisualRoll
 		foreach (var dir in directions)
 		{
 			Vector2Int target = _currentCoord + dir;
-			if (IsSafe(target))
+			if (IsSafe(target) && !IsOccupiedByOtherEnemy(target))
 			{
 				if (target != _lastCoord || _lastCoord == _currentCoord)
 					candidates.Add(target);

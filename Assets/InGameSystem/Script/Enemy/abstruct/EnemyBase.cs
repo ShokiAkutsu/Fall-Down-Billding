@@ -67,4 +67,20 @@ public abstract class EnemyBase : MonoBehaviour
 
 		return !_floorManager.IsHole(coord); // 穴が開く場所なら避けるようにする
 	}
+
+	protected bool IsOccupiedByOtherEnemy(Vector2Int coord)
+	{
+		// 各階層のオフセットを考慮した世界座標の計算（共通化）
+		Vector3 targetWorldPos = GridUtils.ToWorld(coord, _floorSize);
+
+		Collider[] colliders = Physics.OverlapSphere(targetWorldPos, 0.8f);
+		foreach (var col in colliders)
+		{
+			if (col.gameObject != this.gameObject && col.CompareTag("Enemy"))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -14,20 +14,27 @@ public class SlidingMove : VisualSlide
 		Vector2Int target = _currentCoord;
 		Vector2Int checkPos = _currentCoord + _moveDir;
 
-		if (IsInsideFloor(checkPos) && IsSafe(checkPos))
-		{
-			while (IsInsideFloor(checkPos)) // 今は、壁に突き当たるまで
-			{
-				target = checkPos;
-				checkPos += _moveDir;
-			}
-			return target;
-		}
-		else // 指定した方向に行けなかったら留まる
+		// 最初の1歩目が「穴」または「他の敵」なら、その方向は諦めて方向転換
+		if (!IsInsideFloor(checkPos) || !IsSafe(checkPos) || IsOccupiedByOtherEnemy(checkPos))
 		{
 			_moveDir = GetRandomDirection();
 			return _currentCoord;
 		}
+
+		// 滑り出し開始
+		while (IsInsideFloor(checkPos))
+		{
+			// もし「進む先」が穴、または「他の敵」がいたら、その手前でストップ！
+			if (!IsSafe(checkPos) || IsOccupiedByOtherEnemy(checkPos))
+			{
+				break; // whileループを抜ける
+			}
+
+			target = checkPos;
+			checkPos += _moveDir;
+		}
+
+		return target;
 	}
 
 	protected override IEnumerator MoveVisualRoutine(Vector2Int next)

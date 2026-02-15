@@ -12,7 +12,7 @@ public class RollingFollower : VisualRoll
 		foreach (var dir in directions)
 		{
 			Vector2Int target = _currentCoord + dir;
-			if (IsSafe(target))
+			if (IsSafe(target) && !IsOccupiedByOtherEnemy(target))
 			{
 				candidates.Add(target);
 			}

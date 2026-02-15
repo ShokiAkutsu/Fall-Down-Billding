@@ -805,6 +805,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gotMode: 0
   _gotTime: 3
+--- !u!136 &332824204
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332824193}
+  m_Material: {fileID: 13400000, guid: 6c2475769ad1b6146937a856322d39dd, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 0.2
+  m_Height: 0.7
+  m_Direction: 0
+  m_Center: {x: 0, y: 0.2, z: 0.1}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1985,6 +2008,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100006, guid: 9a7360c73cc871546bf5dda47450215b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 332824202}
+    - targetCorrespondingSourceObject: {fileID: 100006, guid: 9a7360c73cc871546bf5dda47450215b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 332824204}
   m_SourcePrefab: {fileID: 100100000, guid: 9a7360c73cc871546bf5dda47450215b, type: 3}
 --- !u!4 &1433557141 stripped
 Transform:
@@ -2280,6 +2306,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1883258114}
   - component: {fileID: 1883258113}
+  - component: {fileID: 1883258115}
   m_Layer: 0
   m_Name: FloorGenerator
   m_TagString: Untagged
@@ -2308,7 +2335,7 @@ MonoBehaviour:
   - {fileID: 8960380878261420746, guid: afee744446725a042b9f9d122a450432, type: 3}
   - {fileID: 8960380878261420746, guid: 940afdae77a76d247b84752c69d8e5bb, type: 3}
   _floorParent: {fileID: 2515461181086280008, guid: 5e5eedce2cd958743a80ab67222c183b, type: 3}
-  _floorHeight: 20
+  _floorHeight: 15
 --- !u!4 &1883258114
 Transform:
   m_ObjectHideFlags: 0
@@ -2324,6 +2351,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1883258115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883258112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d8a3cd32b7298c4f84697cc2366c5fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wallPrefab: {fileID: 7431213416151720681, guid: 41f4321c67899254e98f9dae497f5a8e, type: 3}
+  _wallHeight: 2
+  _hideFrontWall: 1
+  _wallLayers: 3
 --- !u!1001 &2011236995
 PrefabInstance:
   m_ObjectHideFlags: 0
