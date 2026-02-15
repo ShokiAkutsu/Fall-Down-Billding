@@ -9,44 +9,35 @@ using System.Collections;
 /// </summary>
 public class FloorManager : MonoBehaviour
 {
-	List<Vector2Int> _switchList = new List<Vector2Int>();
-    GameObject _holeFloor;
 	Dictionary<Vector2Int, BlockSprite> _allBlocks = new Dictionary<Vector2Int, BlockSprite>(); // ブロックの場所を覚えておく
-	bool _isActive = false;
+	List<Vector2Int> _switchList = new List<Vector2Int>();
 	List<Vector2Int> _switchOrder = new List<Vector2Int>();
+	GameObject _holeFloor;
 	GameObject _clearTargetFloor; // スライドさせる対象
 	Vector2Int _clearFloorPos = new Vector2Int(-1, -1); // Slideする床の座標
-	public Vector2Int PlayerPos { get; private set; }
-
-	private Transform _playerTransform; // 親子にはせず、ただ場所を覚えるだけ
+	Vector2Int _playerPos;
+	public Vector2Int PlayerPos => _playerPos;
+	Transform _playerTransform; // 親子にはせず、ただ場所を覚えるだけ
+	bool _isActive = false;
 
 	void Update()
 	{
 		// もしプレイヤーがまだ見つかっていないなら、タグで探す
-		if (_playerTransform == null)
+		if (_playerTransform)
 		{
 			GameObject playerObj = GameObject.FindWithTag("Player");
-			if (playerObj != null) _playerTransform = playerObj.transform;
-		}
 
-		// プレイヤーがいたら、その「世界座標」を「マス座標」に変換し続ける
-		if (_playerTransform != null)
-		{
-			PlayerPos = WorldToCoord(_playerTransform.position);
+			if (playerObj)
+				_playerTransform = playerObj.transform;
+
+			_playerPos = WorldToCoord(_playerTransform.position);
 		}
 	}
 
 	public Vector2Int WorldToCoord(Vector3 worldPos)
 	{
-		// 【重要】自分の(Managerの)位置からの相対距離で計算する
-		// これで、Managerがどこに配置されていても正しく計算できます
-		Vector3 localPos = transform.InverseTransformPoint(worldPos);
-
-		float offset = 4f; // ここはステージサイズに合わせて調整
-		int x = Mathf.RoundToInt((localPos.x + offset) / 2f);
-		int z = Mathf.RoundToInt((localPos.z + offset) / 2f);
-
-		return new Vector2Int(x, z);
+		Vector3 localPos = transform.InverseTransformPoint(worldPos);// この階層の親から見てどこにいるか変換
+		return GridUtils.ToCoord(localPos, 5);
 	}
 
 	public bool IsHole(Vector2Int checkCoord)

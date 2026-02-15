@@ -16,11 +16,6 @@ public class WallGenerator : MonoBehaviour
 	/// <param name="offset">WorldToCoordで使用しているオフセット（例: 4f）</param>
 	public void GenerateOuterWalls(int width, int height, Transform floorParent)
 	{
-		// マス間の距離が2なので、中心からのオフセットは (マス数 - 1) になる
-		// 5x5なら offset=4, 3x3なら offset=2
-		float offsetX = (width - 1);
-		float offsetZ = (height - 1);
-
 		for (int x = -1; x <= width; x++)
 		{
 			for (int z = -1; z <= height; z++)
@@ -34,28 +29,34 @@ public class WallGenerator : MonoBehaviour
 					{
 						// 段数に応じてY座標をずらす (壁の高さが2なら、0, 2, 4...となる)
 						float wallY = layer * _wallHeight;
-						SpawnWall(x, z, offsetX, offsetZ, wallY, floorParent, z == -1);
+						SpawnWall(x, z, width, height, wallY, floorParent, z == -1);
 					}
 				}
 			}
 		}
 	}
 
-	void SpawnWall(int x, int z, float offX, float offZ, float y, Transform parent, bool isFront)
+	void SpawnWall(int x, int z, int width, int height, float yOffset, Transform parent, bool isFront)
 	{
-		Vector3 localPos = new Vector3(x * 2f - offX, y + (_wallHeight / 2f), z * 2f - offZ);
+		// GridUtilsに「このマスの座標をちょうだい」と頼むだけ
+		// yOffset（段数 * 高さ）に、壁の半分の高さを足して中心を合わせる
+		float finalY = yOffset + (_wallHeight / 2f);
+
+		// 座標計算はここ1箇所に集約！
+		Vector3 localPos = GridUtils.ToWorld(x, z, width, finalY);
 
 		GameObject wall = Instantiate(_wallPrefab, Vector3.zero, Quaternion.identity, parent);
-		wall.transform.localPosition = localPos;
-		wall.transform.localScale = new Vector3(2f, _wallHeight, 2f);
 
-		// 手前かつ透明設定ならMeshRendererをオフ
+		// 親(floorParent)の子として、計算したローカル座標をセット
+		wall.transform.localPosition = localPos;
+
+		// 横幅も GridUtils の定数に合わせるとさらに安全
+		wall.transform.localScale = new Vector3(GridUtils.CellSize, _wallHeight, GridUtils.CellSize);
+
 		if (isFront && _hideFrontWall)
 		{
 			var mr = wall.GetComponent<MeshRenderer>();
-
-			if (mr)
-				mr.enabled = false;
+			if (mr) mr.enabled = false;
 		}
 	}
 }
