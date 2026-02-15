@@ -12,6 +12,13 @@ public class FloorGenerator : MonoBehaviour
 
 	GameObject currentFloorObj; // ¡‚¢‚éŠK‘w‚Ìe
 	GameObject nextFloorObj;    // Ÿ‚Ìi‰º‚ÉT‚¦‚Ä‚¢‚éjŠK‘w‚Ìe
+	WallGenerator _wallGenerator;
+
+	private void Awake()
+	{
+		_wallGenerator = GetComponent<WallGenerator>();
+	}
+
 
 	void Start()
 	{
@@ -102,5 +109,7 @@ public class FloorGenerator : MonoBehaviour
 
 		if (floorNum == 1) currentFloorObj = floorRoot;
 		else nextFloorObj = floorRoot;
+
+		_wallGenerator.GenerateOuterWalls(size, size, floorRoot.transform);
 	}
 }
